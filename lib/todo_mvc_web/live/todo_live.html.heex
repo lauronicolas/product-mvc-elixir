@@ -1,0 +1,42 @@
+<div>
+
+  <h1 style="margin: auto; text-align: center;">Lista de Produtos</h1>
+
+  <.form for={:new_produto} let={f} phx-submit="produto_form_submit">
+    <%= label f, :nome, "Nome:" %><%= text_input f, :nome, [{:required, true}] %>
+    <%= label f, :preco_venda, "Preco de venda:" %><%= text_input f, :preco_venda, [{:type, "number"},{:value, 0.00},{:step,"0.01"},{:required, true}] %>
+    <%= label f, :preco_custo, "Preco de custo:" %><%= text_input f, :preco_custo, [{:type, "number"},{:value, 0.00},{:step,"0.01"},{:required, true}] %>
+    <%= label f, :quantidade, "Quantidade em estoque:" %><%= text_input f, :quantidade, [{:type, "number"},{:value, 0},{:step,"1"},{:required, true}] %>
+    <%= submit "Adicionar" %>
+  </.form>
+
+  <main style="border-top: 1px solid grey; padding-top: 40px;">
+    <div>
+      <strong> Filtros </strong>
+      <button phx-click="change_filter" phx-value-filter="todos" style={if @filter == "todos", do: "background-color: green", else: "" }>Todos</button>
+      <button phx-click="change_filter" phx-value-filter="sem_estoque" style={if @filter == "sem_estoque", do: "background-color: green", else: "" }>Sem estoque</button>
+      <button phx-click="change_filter" phx-value-filter="estoque" style={if @filter == "estoque", do: "background-color: green", else: "" }>Em estoque</button>
+    </div>
+
+    <table>
+      <table>
+        <tr>
+          <th>Nome</th>
+          <th>Preço</th>
+          <th>Quantidade</th>
+          <th>Configurações</th>
+        </tr>
+        <%= for produto <- @filtered_produtos do %>
+          <tr>
+            <td><%= produto.nome %></td>
+            <td>R$ <%= produto.preco_venda %></td>
+            <td><%= produto.quantidade %></td>
+            <td><button>Editar</button> <button style="background-color: red" phx-click="delete" phx-value-id={produto.id}>Excluir</button></td>
+          </tr>
+        <% end %>
+      </table> 
+    </table>
+  </main>
+    
+  
+</div>
